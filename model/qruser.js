@@ -12,10 +12,13 @@ const qruserSchema = new mongoose.Schema({
   phone: {
     type: String,
     required: true,
-    unique: true
   },
   otp: {
     type: String,
+  },
+  isVerified: { 
+    type: Boolean, 
+    default: false 
   },
 });
 

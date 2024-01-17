@@ -4,6 +4,7 @@ const router = require('./routes')
 const db = require('./config/database')
 const app = express()
 const PORT = 3200
+require('dotenv').config()
 
 app.use('/uploads', express.static('uploads'))
 app.use(cors());
