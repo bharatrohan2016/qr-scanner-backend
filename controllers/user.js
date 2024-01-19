@@ -18,6 +18,9 @@ exports.generateOTP = async (req, res) => {
     user = new User(req.body);
     user.otp = generatedOTP;
     await user.save();
+  }else{
+    user.otp = generatedOTP
+    await user.save()
   }
 
   // Generate and save OTP to the user in the database
@@ -39,6 +42,7 @@ exports.generateOTP = async (req, res) => {
 
 
 exports.verifyOTP = async (req, res) => {
+  console.log(req.body);
     try {
       const { phone, otp } = req.body;
       const user = await User.findOne({phone});
@@ -48,7 +52,11 @@ exports.verifyOTP = async (req, res) => {
       if (otpService.verifyOTP(user.otp, otp)) {
         user.isVerified = true;
         await user.save()
-        res.json({ success: true });
+        return res.status(200).json({
+          id: user._id,
+          token: generateToken(user._id),
+          success: true
+        })
       } else {
         res.json({ success: false, message: 'Incorrect OTP' });
       }
@@ -57,20 +65,20 @@ exports.verifyOTP = async (req, res) => {
     }
 };
 
-module.exports.signIn = async (req, res) => {
-  console.log(req.body);
-  try {
-      let user = await User.findOne({phone:req.body.phone})
-      if (user.isVerified === true) {
-        return res.status(200).json({
-          id: user._id,
-          token: generateToken(user._id)
-        })
-      }else{
-        return res.status(404).json('Error in Log in')
-      }
-  } catch (error) {
-      console.log(error);
-      res.status(500).json('Error ', error.message);
-  }
-}
+// module.exports.signIn = async (req, res) => {
+//   console.log(req.body);
+//   try {
+//       let user = await User.findOne({phone:req.body.phone})
+//       if (user.isVerified === true) {
+//         return res.status(200).json({
+//           id: user._id,
+//           token: generateToken(user._id)
+//         })
+//       }else{
+//         return res.status(404).json('Error in Log in')
+//       }
+//   } catch (error) {
+//       console.log(error);
+//       res.status(500).json('Error ', error.message);
+//   }
+// }
