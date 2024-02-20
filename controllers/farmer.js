@@ -23,15 +23,16 @@ module.exports.getsinglefarmer = async(req, res) => {
 
 module.exports.getFarmersByBatchNumber = async (req, res) => {
     try {
+        console.log(req.params.batchNumber);
         const { batchNumber } = req.params; // Access the batchNumber from route params
-
+        newbatchNumber = batchNumber.toUpperCase();
         // You may still want to validate the batchNumber as needed
         const validBatchNumbers = ["BR 1192", "BR 0606"];
-        if (!validBatchNumbers.includes(batchNumber)) {
+        if (!validBatchNumbers.includes(newbatchNumber)) {
             return res.status(400).json({ message: "Invalid batch number" });
         }
 
-        const farmers = await Farmer.find({ batchnumber: batchNumber });
+        const farmers = await Farmer.find({ batchnumber: newbatchNumber });
         res.status(200).json(farmers);
     } catch (error) {
         res.status(500).json({ message: "Internal Server Error", error });
