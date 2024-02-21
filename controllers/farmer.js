@@ -27,7 +27,7 @@ module.exports.getFarmersByBatchNumber = async (req, res) => {
         const { batchNumber } = req.params; // Access the batchNumber from route params
         newbatchNumber = batchNumber.toUpperCase();
         // You may still want to validate the batchNumber as needed
-        const validBatchNumbers = ["BR 1192", "BR 0606"];
+        const validBatchNumbers = ["BR 1192", "BR 0606", "BR 1706"];
         if (!validBatchNumbers.includes(newbatchNumber)) {
             return res.status(400).json({ message: "Invalid batch number" });
         }
@@ -57,7 +57,7 @@ module.exports.uploadCsv = async (req, res) => {
                 }
             }
             // Add any static values like batch number here
-            mappedData.batchnumber = "BR 0606";
+            mappedData.batchnumber = "BR 1706";
 
             const newFarmer = new Farmer(mappedData);
             await newFarmer.save();
