@@ -27,7 +27,7 @@ module.exports.getFarmersByBatchNumber = async (req, res) => {
         const { batchNumber } = req.params; // Access the batchNumber from route params
         newbatchNumber = batchNumber.toUpperCase();
         // You may still want to validate the batchNumber as needed
-        const validBatchNumbers = ["BR 1192", "BR 0606", "BR 1706"];
+        const validBatchNumbers = ["BR 1192", "BR 0606", "BR 1706", "BR 0593"];
         if (!validBatchNumbers.includes(newbatchNumber)) {
             return res.status(400).json({ message: "Invalid batch number" });
         }
