@@ -57,13 +57,32 @@ module.exports.uploadCsv = async (req, res) => {
                 }
             }
             // Add any static values like batch number here
-            mappedData.batchnumber = "BR 1706";
+            mappedData.batchnumber = "BR 1192";
 
             const newFarmer = new Farmer(mappedData);
             await newFarmer.save();
         }
 
         res.status(201).send('Excel data uploaded and saved to database successfully.');
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Internal Server Error', error });
+    }
+};
+
+module.exports.deleteFarmersByBatchNumber = async (req, res) => {
+    try {
+        const { batchNumber } = req.params; // Access the batchNumber from route params
+        const batchNumberUpperCase = batchNumber.toUpperCase(); // Convert to uppercase if your data is case-sensitive
+
+        // Perform the deletion
+        const result = await Farmer.deleteMany({ batchnumber: batchNumberUpperCase });
+
+        if(result.deletedCount === 0) {
+            return res.status(404).json({ message: "No farmers found with the given batch number." });
+        }
+
+        res.status(200).json({ message: `${result.deletedCount} farmers deleted successfully.` });
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Internal Server Error', error });

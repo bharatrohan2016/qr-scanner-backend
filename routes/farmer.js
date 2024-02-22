@@ -8,5 +8,6 @@ router.get('/get-farmer' ,farmerController.getfarmers)
 router.get('/get-farmer/:id', farmerController.getsinglefarmer)
 router.post('/upload-farmer-data', upload.single('file'), farmerController.uploadCsv);
 router.get('/farmers-by-batch/:batchNumber', farmerController.getFarmersByBatchNumber);
+router.delete('/batch/:batchNumber', farmerController.deleteFarmersByBatchNumber)
 
 module.exports = router
